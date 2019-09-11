@@ -7,6 +7,7 @@
 // 
 // Reference
 // [1] https://www.atmarkit.co.jp/ait/articles/0307/04/news005.html
+// [2] https://dobon.net/vb/dotnet/internet/udpclient.html
 
 
 
@@ -22,6 +23,10 @@ namespace Float2Byte
     {
         static void Main()
         {
+            // Float to Byte Array
+            //
+            // [1] https://www.atmarkit.co.jp/ait/articles/0307/04/news005.html
+
             // Byte 列の取り扱い
             byte[] byteArray = {0, 1, 2, 10, 11, 12, (byte)'a', (byte)'b'};
 
@@ -33,6 +38,7 @@ namespace Float2Byte
                 Console.Write("{0:X2} ", byteArray[i]);
             }
             // 出力：00 01 02 0A 0B 0C 61 62
+            // Output：00 01 02 0A 0B 0C 61 62
 
             Console.Write("\n");
             Console.Write("\n");
@@ -52,6 +58,37 @@ namespace Float2Byte
                 }
                 Console.Write("\n");
             }
+
+            // UDP Data Send
+            // 
+            // [2] https://dobon.net/vb/dotnet/internet/udpclient.html
+
+
+            //データを送信するリモートホストとポート番号
+            string remoteHost = "127.0.0.1";
+            int remotePort = 2002;
+
+            //UdpClientオブジェクトを作成する
+            System.Net.Sockets.UdpClient udp =
+                new System.Net.Sockets.UdpClient();
+
+            //送信するデータを作成する
+            byte[] sendBytes = BitConverter.GetBytes(3.14159f);
+
+
+            //リモートホストを指定してデータを送信する
+            udp.Send(sendBytes, sendBytes.Length, remoteHost, remotePort);
+
+            //または、
+            //udp = new UdpClient(remoteHost, remotePort);
+            //として、
+            //udp.Send(sendBytes, sendBytes.Length);
+
+            
+            //UdpClientを閉じる
+            udp.Close();
+
+
         }
     }
 }
