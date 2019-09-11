@@ -8,6 +8,15 @@
 // Reference
 // [1] https://www.atmarkit.co.jp/ait/articles/0307/04/news005.html
 // [2] https://dobon.net/vb/dotnet/internet/udpclient.html
+//
+// Result
+// C:\Users\MasahiroFurukawa\Documents\GitHub\Utility\C#\Float2Byte\Float2Byte\bin\Debug>Float2Byte.exe
+// 00-01-02-0A-0B-0C-61-62
+// 00 01 02 0A 0B 0C 61 62
+// 
+// 3.14159\t ->  BitConverter.GetBytes(floatArray[j]) ->  D0 0F 49 40  -> BitConverter.ToSingle ->  3.14159
+// 0 ->  BitConverter.GetBytes(floatArray[j]) ->  00 00 00 00  -> BitConverter.ToSingle ->  0
+//
 
 
 
@@ -31,33 +40,40 @@ namespace Float2Byte
             byte[] byteArray = {0, 1, 2, 10, 11, 12, (byte)'a', (byte)'b'};
 
             Console.WriteLine(BitConverter.ToString(byteArray));
-            // 出力：00-01-02-0A-0B-0C-61-62
+            // Output：00-01-02-0A-0B-0C-61-62
 
             for (int i = 0; i < byteArray.Length; i++)
             {
                 Console.Write("{0:X2} ", byteArray[i]);
             }
-            // 出力：00 01 02 0A 0B 0C 61 62
             // Output：00 01 02 0A 0B 0C 61 62
 
-            Console.Write("\n");
-            Console.Write("\n");
+            Console.WriteLine();
+            Console.WriteLine();
 
 
             // Float 型の取り扱い
             float[] floatArray = { 3.14159f, 0.0f };
 
             for (int j = 0; j < floatArray.Length; j++)
-            { 
+            {
+                Console.Write(floatArray[j]);
+
                 // Float -> Byte 変換
                 byte[] byteArrayFromFloat = BitConverter.GetBytes(floatArray[j]);
-            
+
+                Console.Write(" ->  BitConverter.GetBytes(floatArray[j]) ->  ");
+
                 for (int i = 0; i < byteArrayFromFloat.Length; i++)
                 {
                     Console.Write("{0:X2} ", byteArrayFromFloat[i]);
                 }
-                Console.Write("\n");
+                Console.Write(" -> BitConverter.ToSingle ->  ");
+
+                float f = BitConverter.ToSingle(byteArrayFromFloat, 0);
+                Console.WriteLine(f);
             }
+
 
             // UDP Data Send
             // 
